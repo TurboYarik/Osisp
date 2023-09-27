@@ -118,7 +118,7 @@ void add(int x, int y)
             }
             return;
         }
-        // Отображение пустой клетки
+        
         board[x][y] = -2;
         _itot_s(CountMinesAround(x, y), numberText, 10);
         SetWindowText(buttons[x][y], numberText);
@@ -138,7 +138,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hwnd, &ps);
 
-        // Отрисовка игрового поля
+       
         for (int x = 0; x < BOARD_WIDTH; ++x)
         {
             for (int y = 0; y < BOARD_HEIGHT; ++y)
@@ -146,22 +146,22 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 RECT cellRect = { x * CELL_SIZE, y * CELL_SIZE, (x + 1) * CELL_SIZE, (y + 1) * CELL_SIZE };
                 int cellValue = board[x][y];
                 
-                HBRUSH brush = CreateSolidBrush(RGB(192, 192, 192)); // Серый цвет
+                HBRUSH brush = CreateSolidBrush(RGB(192, 192, 192)); 
                 FillRect(hdc, &cellRect, brush);
                 DeleteObject(brush);
 
-                // Рисование содержимого клетки
+               
                 
                 if (cellValue > 0 && (GetKeyState(VK_SHIFT) >= 0))
                 {
-                    // Отрисовка числа в клетке
+                    
                     wstring numberStr = to_wstring(cellValue);
                     DrawText(hdc, numberStr.c_str(), -1, &cellRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
                 }
                 else if (cellValue == -2)
                 {
-                    // Отрисовка открытой пустой клетки
-                    HBRUSH openBrush = CreateSolidBrush(RGB(224, 224, 224)); // Светло-серый цвет
+                    
+                    HBRUSH openBrush = CreateSolidBrush(RGB(224, 224, 224));
                     FillRect(hdc, &cellRect, openBrush);
                     DeleteObject(openBrush);
                 }
@@ -191,7 +191,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             if (found) break;
         }
 
-        // Обработка нажатия клетки (кнопки)
         if (found)
         {
             int cellValue = board[x][y];
@@ -231,14 +230,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
     case WM_LBUTTONDOWN:
     {
-        // Проверка, нажата ли клавиша Shift
+        
         if (GetKeyState(VK_SHIFT) < 0)
         {
-            // Левая кнопка мыши + Shift
+           
             int x, y;
             bool found = false;
 
-            // Поиск координаты нажатой клетки
+           
             for (x = 0; x < BOARD_WIDTH; ++x)
             {
                 for (y = 0; y < BOARD_HEIGHT; ++y)
@@ -252,12 +251,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 if (found) break;
             }
 
-            // Установка флага на клетке (если она еще не открыта)
+            
             if (found && board[x][y] != -2)
             {
-                // Устанавливаем флаг на клетке
-                board[x][y] = FLAGGED_CELL; // Флаг
-                SetWindowText(buttons[x][y], _T("F")); // Отображаем "F" на клетке
+              
+                board[x][y] = FLAGGED_CELL; 
+                SetWindowText(buttons[x][y], _T("F"));
                 flc++;
             }
         }
